@@ -1,7 +1,7 @@
 package ua.api.controller;
 
 import ua.api.exceptions.EmployeeBusinessException;
-import ua.api.model.entity.Employee;
+import ua.api.model.Employee;
 import ua.api.service.EmployeeService;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.RestController;

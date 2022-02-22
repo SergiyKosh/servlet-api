@@ -1,4 +1,4 @@
-package ua.api.model.entity;
+package ua.api.model;
 
 import lombok.*;
 

@@ -3,8 +3,8 @@ package ua.api.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import ua.api.exceptions.EmployeeBusinessException;
-import ua.api.model.dao.EmployeeDatabaseDao;
-import ua.api.model.entity.Employee;
+import ua.api.dao.EmployeeDao;
+import ua.api.model.Employee;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.core.annotation.Service;
 
@@ -17,7 +17,7 @@ import static ua.simpleservletframework.mvc.servlet.DispatcherServlet.*;
 @Service("employeeService")
 public class EmployeeService {
     @Autowired
-    private EmployeeDatabaseDao employeeDao;
+    private EmployeeDao employeeDao;
 
     private String[] getParams(HttpServletRequest request) throws IOException {
         int counter;
@@ -31,7 +31,7 @@ public class EmployeeService {
     }
 
     @SneakyThrows
-    public void add() {
+    public Employee add() {
         try {
             String[] params = getParams(request);
             Object[] paramsObj = Arrays.stream(params)
@@ -53,14 +53,14 @@ public class EmployeeService {
                     .departmentId(departmentId)
                     .chiefId(chiefId)
                     .build();
-            employeeDao.add(employee);
+            return employeeDao.add(employee);
         } catch (IOException e) {
             throw new EmployeeBusinessException(e);
         }
     }
 
     @SneakyThrows
-    public void update(String idStr) {
+    public Employee update(String idStr) {
         try {
             int counter;
             StringBuilder str = new StringBuilder();
@@ -92,7 +92,7 @@ public class EmployeeService {
                     .departmentId(departmentId)
                     .chiefId(chiefId)
                     .build();
-            employeeDao.update(employee);
+            return employeeDao.update(employee);
         } catch (IOException e) {
             throw new EmployeeBusinessException(e);
         }

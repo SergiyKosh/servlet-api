@@ -1,11 +1,11 @@
-package ua.api.model.dao;
+package ua.api.dao;
 
 import java.util.List;
 
 public interface Dao<T> {
-    void add(T entity);
+    T add(T entity);
 
-    void update(T entity);
+    T update(T entity);
 
     void delete(Long id);
 
