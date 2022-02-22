@@ -1,7 +1,7 @@
 package ua.simpleservletframework.core.cookie;
 
 import jakarta.servlet.http.Cookie;
-import ua.simpleservletframework.core.annotation.annotation.component.Component;
+import ua.simpleservletframework.core.annotation.Component;
 import ua.simpleservletframework.mvc.servlet.DispatcherServlet;
 
 @Component("cookies")

@@ -1,20 +1,23 @@
 package ua.api.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import ua.api.exceptions.EmployeeBusinessException;
-import ua.api.exceptions.EmployeeDaoException;
-import ua.api.model.dao.Dao;
 import ua.api.model.dao.EmployeeDatabaseDao;
 import ua.api.model.entity.Employee;
+import ua.simpleservletframework.core.annotation.Autowired;
+import ua.simpleservletframework.core.annotation.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static ua.api.util.FieldsConst.*;
+import static ua.simpleservletframework.mvc.servlet.DispatcherServlet.*;
 
+@Service("employeeService")
 public class EmployeeService {
-    private final Dao<Employee> employeeDao = new EmployeeDatabaseDao();
+    @Autowired
+    private EmployeeDatabaseDao employeeDao;
 
     private String[] getParams(HttpServletRequest request) throws IOException {
         int counter;
@@ -27,7 +30,8 @@ public class EmployeeService {
         return str.toString().split("&");
     }
 
-    public void add(HttpServletRequest request) throws EmployeeBusinessException {
+    @SneakyThrows
+    public void add() {
         try {
             String[] params = getParams(request);
             Object[] paramsObj = Arrays.stream(params)
@@ -55,7 +59,8 @@ public class EmployeeService {
         }
     }
 
-    public void update(HttpServletRequest request) throws EmployeeBusinessException {
+    @SneakyThrows
+    public void update(String idStr) {
         try {
             int counter;
             StringBuilder str = new StringBuilder();
@@ -93,25 +98,13 @@ public class EmployeeService {
         }
     }
 
-    public void delete(HttpServletRequest request) throws EmployeeBusinessException {
-        try {
-            int counter;
-            StringBuilder str = new StringBuilder();
-            while ((counter = request.getInputStream().read()) != -1) {
-                str.append((char) counter);
-            }
-
-            String[] params = str.toString().split("&");
-
-            long id = Long.parseLong(params[0].replaceAll("id=", ""));
+    public void delete(String idStr) {
+            long id = Long.parseLong(idStr);
             employeeDao.delete(id);
-        } catch (IOException e) {
-            throw new EmployeeBusinessException(e);
-        }
     }
 
-    public Employee get(HttpServletRequest request) {
-        long id = Long.parseLong(request.getParameter(EMPLOYEE_ID));
+    public Employee get(String idStr) {
+        long id = Long.parseLong(idStr);
         return employeeDao.get(id);
     }
 

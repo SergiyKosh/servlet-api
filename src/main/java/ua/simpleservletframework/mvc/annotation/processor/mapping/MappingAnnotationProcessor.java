@@ -3,6 +3,7 @@ package ua.simpleservletframework.mvc.annotation.processor.mapping;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import ua.simpleservletframework.core.context.Context;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.Controller;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.RestController;
@@ -126,7 +127,8 @@ public class MappingAnnotationProcessor {
         mappingUtils.mappingHandler(result, controller);
     }
 
-    public void mappingHandler(Set<Class<?>> controllers, HttpServletRequest request, HttpServletResponse response) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ServletException {
+    @SneakyThrows
+    public void mappingHandler(Set<Class<?>> controllers, HttpServletRequest request, HttpServletResponse response) {
         DispatcherServlet.request = request;
         DispatcherServlet.response = response;
 

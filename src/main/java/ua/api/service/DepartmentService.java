@@ -1,27 +1,23 @@
 package ua.api.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import ua.api.exceptions.DepartmentBusinessException;
-import ua.api.exceptions.DepartmentDaoException;
-import ua.api.model.dao.Dao;
 import ua.api.model.dao.DepartmentDatabaseDao;
 import ua.api.model.entity.Department;
-import ua.simpleservletframework.data.annotation.annotation.ComponentDao;
+import ua.simpleservletframework.core.annotation.Autowired;
+import ua.simpleservletframework.core.annotation.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static ua.api.util.FieldsConst.*;
 
-
-@ComponentDao
+@Service("departmentService")
 public class DepartmentService {
-    private final Dao<Department> departmentDao;
-
-    public DepartmentService() {
-        this.departmentDao = new DepartmentDatabaseDao();
-    }
+    @Autowired
+    private DepartmentDatabaseDao departmentDao;
 
     private Department buildDepartment(HttpServletRequest request) throws IOException {
         int counter;
@@ -54,32 +50,29 @@ public class DepartmentService {
         }
     }
 
-    public void update(HttpServletRequest request) throws DepartmentBusinessException {
-        try {
-            Department department = buildDepartment(request);
-
-            departmentDao.update(department);
-        } catch (IOException e) {
-            throw new DepartmentBusinessException(e);
-        }
+    @SneakyThrows
+    public void update(Department department) {
+//        try {
+//            Department department = buildDepartment(request);
+//
+//            departmentDao.update(department);
+//        } catch (IOException e) {
+//            throw new DepartmentBusinessException(e);
+//        }
+//
+//        Department department;
+//
+//        department = new ObjectMapper().readValue(request.getInputStream(), Department.class);
+        departmentDao.update(department);
     }
 
-    public void delete(HttpServletRequest request) throws IOException {
-        int counter;
-        StringBuilder str = new StringBuilder();
-        while ((counter = request.getInputStream().read()) != -1) {
-            str.append((char) counter);
-        }
-
-        String[] params = str.toString().split("&");
-
-        long id = Long.parseLong(params[0].replaceAll("id=", ""));
-
+    public void delete(String idStr) throws IOException {
+        long id = Long.parseLong(idStr);
         departmentDao.delete(id);
     }
 
-    public Department get(HttpServletRequest request) {
-            long id = Long.parseLong(request.getParameter(DEP_ID));
+    public Department get(String idStr) {
+            long id = Long.parseLong(idStr);
             return departmentDao.get(id);
     }
 

@@ -14,7 +14,7 @@ import java.util.Objects;
 import static ua.api.util.FieldsConst.*;
 import static ua.api.util.SQLQueries.*;
 
-@ComponentDao
+@ComponentDao("departmentDao")
 public class EmployeeDatabaseDao implements Dao<Employee> {
     @Override
     @SneakyThrows

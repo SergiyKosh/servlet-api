@@ -14,7 +14,7 @@ import static ua.api.util.FieldsConst.DEP_ID;
 import static ua.api.util.FieldsConst.DEP_NAME;
 import static ua.api.util.SQLQueries.*;
 
-@ComponentDao
+@ComponentDao("employeeDao")
 public class DepartmentDatabaseDao implements Dao<Department> {
     @Override
     @SneakyThrows
