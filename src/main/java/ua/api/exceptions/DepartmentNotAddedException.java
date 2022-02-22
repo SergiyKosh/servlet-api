@@ -8,9 +8,4 @@ public class DepartmentNotAddedException extends RuntimeException {
     public DepartmentNotAddedException(String message) {
         super("Could not to add department. " + message);
     }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
 }

@@ -1,9 +1,9 @@
 package ua.api.controller;
 
-import ua.api.exceptions.EmployeeBusinessException;
 import ua.api.model.Employee;
 import ua.api.service.EmployeeService;
 import ua.simpleservletframework.core.annotation.Autowired;
+import ua.simpleservletframework.core.annotation.RequestBody;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.RestController;
 import ua.simpleservletframework.mvc.annotation.annotation.mapping.DeleteMapping;
 import ua.simpleservletframework.mvc.annotation.annotation.mapping.GetMapping;
@@ -24,25 +24,22 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee get(@PathVariable("id") String id) throws EmployeeBusinessException {
+    public Employee get(@PathVariable("id") String id) {
         return service.get(id);
     }
 
-    @PutMapping
-    public String save() {
-        service.add();
-        return "redirect:/http://localhost:8081/employees";
+    @PostMapping
+    public Employee save(@RequestBody Employee employee) {
+        return service.add(employee);
     }
 
-    @PostMapping("/{id}")
-    public String update(@PathVariable("id") String id) {
-        service.update(id);
-        return "redirect:/http://localhost:8081/employees";
+    @PutMapping
+    public Employee update(@RequestBody Employee employee) {
+        return service.update(employee);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") String id) {
-        service.delete(id);
-        return "redirect:/http://localhost:8081/employees";
+    public Integer delete(@PathVariable("id") String id) {
+        return service.delete(id);
     }
 }

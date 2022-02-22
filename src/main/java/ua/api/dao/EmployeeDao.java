@@ -2,6 +2,9 @@ package ua.api.dao;
 
 import lombok.SneakyThrows;
 import ua.api.exceptions.EmployeeDaoException;
+import ua.api.exceptions.EmployeeNotAddedException;
+import ua.api.exceptions.EmployeeNotDeletedException;
+import ua.api.exceptions.EmployeeNotUpdatedException;
 import ua.api.model.Employee;
 import ua.simpleservletframework.data.annotation.annotation.ComponentDao;
 import ua.simpleservletframework.data.factory.ConnectionFactory;
@@ -38,7 +41,7 @@ public class EmployeeDao implements Dao<Employee> {
             return employee;
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotAddedException(e.getMessage());
         }
     }
 
@@ -62,7 +65,7 @@ public class EmployeeDao implements Dao<Employee> {
             return employee;
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotUpdatedException(e.getMessage());
         }
     }
 
@@ -78,7 +81,7 @@ public class EmployeeDao implements Dao<Employee> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotDeletedException(e.getMessage());
         }
     }
 

@@ -1,14 +1,11 @@
 package ua.api.exceptions;
 
 public class DepartmentNotUpdatedException extends RuntimeException {
-    public DepartmentNotUpdatedException(String message) {
-        super("Could not to update department. " + message);
+    public DepartmentNotUpdatedException() {
+        super("Could not to update department");
     }
 
-
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
+    public DepartmentNotUpdatedException(String message) {
+        super("Could not to update department. " + message);
     }
 }

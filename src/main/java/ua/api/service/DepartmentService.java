@@ -1,9 +1,10 @@
 package ua.api.service;
 
 import lombok.SneakyThrows;
+import ua.api.dao.DepartmentDao;
 import ua.api.exceptions.DepartmentNotAddedException;
 import ua.api.exceptions.DepartmentNotFoundException;
-import ua.api.dao.DepartmentDao;
+import ua.api.exceptions.DepartmentNotUpdatedException;
 import ua.api.model.Department;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.core.annotation.Service;
@@ -26,7 +27,7 @@ public class DepartmentService {
     @SneakyThrows
     public Department update(Department department) {
         return Optional.ofNullable(departmentDao.update(department))
-                .orElseThrow(DepartmentNotAddedException::new);
+                .orElseThrow(DepartmentNotUpdatedException::new);
     }
 
     @SneakyThrows

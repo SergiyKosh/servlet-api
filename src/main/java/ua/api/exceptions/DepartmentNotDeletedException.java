@@ -8,9 +8,4 @@ public class DepartmentNotDeletedException extends RuntimeException {
     public DepartmentNotDeletedException(String message) {
         super("Could not to delete department. " + message);
     }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
 }
