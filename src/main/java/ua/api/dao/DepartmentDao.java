@@ -1,8 +1,11 @@
-package ua.api.model.dao;
+package ua.api.dao;
 
 import lombok.SneakyThrows;
 import ua.api.exceptions.DepartmentDaoException;
-import ua.api.model.entity.Department;
+import ua.api.exceptions.DepartmentNotAddedException;
+import ua.api.exceptions.DepartmentNotDeletedException;
+import ua.api.exceptions.DepartmentNotUpdatedException;
+import ua.api.model.Department;
 import ua.simpleservletframework.data.annotation.annotation.ComponentDao;
 import ua.simpleservletframework.data.factory.ConnectionFactory;
 
@@ -15,10 +18,10 @@ import static ua.api.util.FieldsConst.DEP_NAME;
 import static ua.api.util.SQLQueries.*;
 
 @ComponentDao("employeeDao")
-public class DepartmentDatabaseDao implements Dao<Department> {
+public class DepartmentDao implements Dao<Department> {
     @Override
     @SneakyThrows
-    public void add(Department department) {
+    public Department add(Department department) {
         try (
                 Connection connection = ConnectionFactory.getInstance().getConnection();
                 PreparedStatement ps = connection.prepareStatement(ADD_DEPARTMENT)
@@ -27,15 +30,16 @@ public class DepartmentDatabaseDao implements Dao<Department> {
             ps.setLong(1, department.getId());
             ps.setString(2, department.getName());
             ps.executeUpdate();
+            return department;
 
         } catch (SQLException e) {
-            throw new DepartmentDaoException(e);
+            throw new DepartmentNotAddedException(e.getMessage());
         }
     }
 
     @Override
     @SneakyThrows
-    public void update(Department department) {
+    public Department update(Department department) {
         try (
                 Connection connection = ConnectionFactory.getInstance().getConnection();
                 PreparedStatement ps = connection.prepareStatement(UPDATE_DEPARTMENT_WHERE_ID)
@@ -44,9 +48,10 @@ public class DepartmentDatabaseDao implements Dao<Department> {
             ps.setString(1, department.getName());
             ps.setLong(2, department.getId());
             ps.executeUpdate();
+            return department;
 
         } catch (SQLException e) {
-            throw new DepartmentDaoException(e);
+            throw new DepartmentNotUpdatedException(e.getMessage());
         }
     }
 
@@ -62,7 +67,7 @@ public class DepartmentDatabaseDao implements Dao<Department> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DepartmentDaoException(e);
+            throw new DepartmentNotDeletedException(e.getMessage());
         }
     }
 

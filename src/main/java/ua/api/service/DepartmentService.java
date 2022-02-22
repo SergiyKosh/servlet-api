@@ -1,82 +1,49 @@
 package ua.api.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
-import ua.api.exceptions.DepartmentBusinessException;
-import ua.api.model.dao.DepartmentDatabaseDao;
-import ua.api.model.entity.Department;
+import ua.api.dao.DepartmentDao;
+import ua.api.exceptions.DepartmentNotAddedException;
+import ua.api.exceptions.DepartmentNotFoundException;
+import ua.api.exceptions.DepartmentNotUpdatedException;
+import ua.api.model.Department;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.core.annotation.Service;
+import ua.simpleservletframework.mvc.servlet.DispatcherServlet;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
+import java.util.Optional;
 
 @Service("departmentService")
 public class DepartmentService {
     @Autowired
-    private DepartmentDatabaseDao departmentDao;
+    private DepartmentDao departmentDao;
 
-    private Department buildDepartment(HttpServletRequest request) throws IOException {
-        int counter;
-        StringBuilder str = new StringBuilder();
-
-        while ((counter = request.getInputStream().read()) != -1) {
-            str.append((char) counter);
-        }
-
-        String[] params = str.toString().split("&");
-        Object[] paramsObj = Arrays.stream(params)
-                .map(s -> s.replaceAll("id=", "")
-                        .replaceAll("name=", "")
-                ).toArray();
-        params = Arrays.copyOf(paramsObj, paramsObj.length, String[].class);
-        long id = Long.parseLong(params[0]);
-
-        return Department.builder()
-                .id(id)
-                .name(params[1])
-                .build();
-    }
-
-    public void add(HttpServletRequest request) throws DepartmentBusinessException {
-        try {
-            Department department = buildDepartment(request);
-            departmentDao.add(department);
-        } catch (IOException e) {
-            throw new DepartmentBusinessException(e);
-        }
+    @SneakyThrows
+    public Department add(Department department) {
+        return Optional.ofNullable(departmentDao.add(department))
+                .orElseThrow(DepartmentNotAddedException::new);
     }
 
     @SneakyThrows
-    public void update(Department department) {
-//        try {
-//            Department department = buildDepartment(request);
-//
-//            departmentDao.update(department);
-//        } catch (IOException e) {
-//            throw new DepartmentBusinessException(e);
-//        }
-//
-//        Department department;
-//
-//        department = new ObjectMapper().readValue(request.getInputStream(), Department.class);
-        departmentDao.update(department);
+    public Department update(Department department) {
+        return Optional.ofNullable(departmentDao.update(department))
+                .orElseThrow(DepartmentNotUpdatedException::new);
     }
 
-    public void delete(String idStr) throws IOException {
+    @SneakyThrows
+    public Integer delete(String idStr) {
         long id = Long.parseLong(idStr);
         departmentDao.delete(id);
+        return DispatcherServlet.response.getStatus();
     }
 
     public Department get(String idStr) {
-            long id = Long.parseLong(idStr);
-            return departmentDao.get(id);
+        long id = Long.parseLong(idStr);
+        return Optional.ofNullable(departmentDao.get(id))
+                .orElseThrow(() -> new DepartmentNotFoundException(idStr));
     }
 
     public List<Department> findAll() {
-            return departmentDao.findAll();
+        return departmentDao.findAll();
     }
 }

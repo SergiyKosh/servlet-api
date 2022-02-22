@@ -1,8 +1,11 @@
-package ua.api.model.dao;
+package ua.api.dao;
 
 import lombok.SneakyThrows;
 import ua.api.exceptions.EmployeeDaoException;
-import ua.api.model.entity.Employee;
+import ua.api.exceptions.EmployeeNotAddedException;
+import ua.api.exceptions.EmployeeNotDeletedException;
+import ua.api.exceptions.EmployeeNotUpdatedException;
+import ua.api.model.Employee;
 import ua.simpleservletframework.data.annotation.annotation.ComponentDao;
 import ua.simpleservletframework.data.factory.ConnectionFactory;
 
@@ -15,10 +18,10 @@ import static ua.api.util.FieldsConst.*;
 import static ua.api.util.SQLQueries.*;
 
 @ComponentDao("departmentDao")
-public class EmployeeDatabaseDao implements Dao<Employee> {
+public class EmployeeDao implements Dao<Employee> {
     @Override
     @SneakyThrows
-    public void add(Employee employee) {
+    public Employee add(Employee employee) {
         try (
                 Connection connection = ConnectionFactory.getInstance().getConnection();
                 PreparedStatement ps = connection.prepareStatement(ADD_EMPLOYEE)
@@ -35,15 +38,16 @@ public class EmployeeDatabaseDao implements Dao<Employee> {
             }
 
             ps.executeUpdate();
+            return employee;
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotAddedException(e.getMessage());
         }
     }
 
     @Override
     @SneakyThrows
-    public void update(Employee employee) {
+    public Employee update(Employee employee) {
         try (
                 Connection connection = ConnectionFactory.getInstance().getConnection();
                 PreparedStatement ps = connection.prepareStatement(UPDATE_EMPLOYEE_WHERE_ID)
@@ -58,9 +62,10 @@ public class EmployeeDatabaseDao implements Dao<Employee> {
             }
             ps.setLong(5, employee.getId());
             ps.executeUpdate();
+            return employee;
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotUpdatedException(e.getMessage());
         }
     }
 
@@ -76,7 +81,7 @@ public class EmployeeDatabaseDao implements Dao<Employee> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new EmployeeDaoException(e);
+            throw new EmployeeNotDeletedException(e.getMessage());
         }
     }
 
