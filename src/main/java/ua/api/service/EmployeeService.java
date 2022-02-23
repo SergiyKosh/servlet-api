@@ -1,7 +1,7 @@
 package ua.api.service;
 
 import lombok.SneakyThrows;
-import ua.api.dao.EmployeeDao;
+import ua.api.dao.Dao;
 import ua.api.exceptions.EmployeeNotAddedException;
 import ua.api.exceptions.EmployeeNotFoundException;
 import ua.api.exceptions.EmployeeNotUpdatedException;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("employeeService")
-public class EmployeeService {
-    @Autowired
-    private EmployeeDao employeeDao;
+public class EmployeeService implements ua.api.service.Service<Employee> {
+    @Autowired("employeeDao")
+    private Dao<Employee> employeeDao;
 
     @SneakyThrows
     public Employee add(Employee employeeBody) {
