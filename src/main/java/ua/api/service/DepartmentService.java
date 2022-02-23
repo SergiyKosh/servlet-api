@@ -1,7 +1,7 @@
 package ua.api.service;
 
 import lombok.SneakyThrows;
-import ua.api.dao.DepartmentDao;
+import ua.api.dao.Dao;
 import ua.api.exceptions.DepartmentNotAddedException;
 import ua.api.exceptions.DepartmentNotFoundException;
 import ua.api.exceptions.DepartmentNotUpdatedException;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("departmentService")
-public class DepartmentService {
-    @Autowired
-    private DepartmentDao departmentDao;
+public class DepartmentService implements ua.api.service.Service<Department> {
+    @Autowired("departmentDao")
+    private Dao<Department> departmentDao;
 
     @SneakyThrows
     public Department add(Department department) {

@@ -2,6 +2,7 @@ package ua.api.controller;
 
 import ua.api.model.Department;
 import ua.api.service.DepartmentService;
+import ua.api.service.Service;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.core.annotation.RequestBody;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.RestController;
@@ -15,8 +16,8 @@ import java.util.List;
 
 @RestController("/departments")
 public class DepartmentController {
-    @Autowired
-    private DepartmentService service;
+    @Autowired("departmentService")
+    private Service<Department> service;
 
     @GetMapping
     public List<Department> findAll() {
@@ -33,7 +34,7 @@ public class DepartmentController {
         return service.add(departmentBody);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Department update(@RequestBody Department departmentBody) {
         return service.update(departmentBody);
     }

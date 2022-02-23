@@ -2,6 +2,7 @@ package ua.api.controller;
 
 import ua.api.model.Employee;
 import ua.api.service.EmployeeService;
+import ua.api.service.Service;
 import ua.simpleservletframework.core.annotation.Autowired;
 import ua.simpleservletframework.core.annotation.RequestBody;
 import ua.simpleservletframework.mvc.annotation.annotation.controller.RestController;
@@ -15,8 +16,8 @@ import java.util.List;
 
 @RestController("/employees")
 public class EmployeeController {
-    @Autowired
-    private EmployeeService service;
+    @Autowired("employeeService")
+    private Service<Employee> service;
 
     @GetMapping
     public List<Employee> findAll() {
@@ -33,7 +34,7 @@ public class EmployeeController {
         return service.add(employee);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Employee update(@RequestBody Employee employee) {
         return service.update(employee);
     }
