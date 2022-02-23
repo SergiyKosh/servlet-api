@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ua.api.util.FieldsConst.*;
+import static ua.api.util.FieldsConstants.*;
 import static ua.api.util.SQLQueries.*;
 
 @ComponentDao("departmentDao")

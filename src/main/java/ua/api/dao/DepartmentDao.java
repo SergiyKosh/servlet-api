@@ -13,8 +13,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ua.api.util.FieldsConst.DEP_ID;
-import static ua.api.util.FieldsConst.DEP_NAME;
+import static ua.api.util.FieldsConstants.DEP_ID;
+import static ua.api.util.FieldsConstants.DEP_NAME;
 import static ua.api.util.SQLQueries.*;
 
 @ComponentDao("employeeDao")
